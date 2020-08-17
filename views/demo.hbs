@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <title id="title"></title>
+    </head>
+    <body>
+
+    <div id='container'>
+
+    <h3 class="mt-4 text-center">Add New</h3>
+
+    <div class="container">
+
+    <div id='data_entry'>
+        <div class='orders'>
+
+            <div class="card mt-4" style="width: 18rem;">
+            <div class="card-header">
+                New Order
+            </div>
+            <ul class="list-group list-group-flush" id='items'>
+                
+                
+            </ul>
+            <button class="btn btn-primary" onclick="add_btn()">add new</button>
+            {{!-- <button type="button" class="btn btn-primary">Primary</button> --}}
+            </div>
+
+        </div>
+
+    </div>
+
+<hr>
+
+<h3 class="mt-4 text-center">Orders</h3>
+    <div class="row" id='all_orders'>
+
+        <!--<div class="col-sm">
+            <div class='orders'>
+
+                <div class="card mt-4" style="width: 18rem;">
+                <div class="card-header">
+                    Order Id : 101001
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+                {{!-- <button type="button" class="btn btn-primary">Primary</button> --}}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class='orders'>
+
+                <div class="card mt-4" style="width: 18rem;">
+                <div class="card-header">
+                    Order Id : 101001
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm">
+            <div class='orders'>
+
+                <div class="card mt-4" style="width: 18rem;">
+                <div class="card-header">
+                    Order Id : 101001
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Cras justo odio</li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+        
+    </div>
+    </div>-->
+
+
+    </div>
+
+    </body>
+    <!-- Footer -->
+    <footer class="page-footer font-small blue mt-4">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+
+    </div>
+    <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+
+<!-- Button trigger modal -->
+<button type="button" id='add_new_item_btn' class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" hidden>
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <input type='text' id='new_item'>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closebtn" hidden>close</button>
+        <button type="button" class="btn btn-primary" onclick="save_changes()">add</button>
+        <button type="button" class="btn btn-primary" onclick="clear_list()">submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+    var socket = io()
+    socket.on('message', new_message)
+
+    function new_message(data){
+        //console.log(
+        create_list(data.items)
+    }
+
+    function clear_list(){
+        document.getElementById('items').innerHTML = ''
+        const close = document.getElementById('closebtn')
+        close.click()
+
+        postData('/new_order', { 'items':new_list })
+        .then(data => {
+            console.log(data); // JSON data parsed by `data.json()` call
+        });
+
+        new_list = []
+        //alert()
+    }
+
+    var new_list = []
+    function save_changes(){
+        const value = document.getElementById('new_item')
+        if (value.value == '') return
+        add_new(value.value)
+        value.value = ''
+    }
+
+    function add_btn(){
+        const btn = document.getElementById('add_new_item_btn')
+        btn.click();
+    }
+
+    const list_ = document.getElementById('items')
+    function add_new(item){
+        const li = document.createElement('li')
+        li.className = 'list-group-item'
+        li.innerHTML = item
+        list_.appendChild(li)
+        new_list.push(item)
+    }
+    // add_new('vishnu')
+
+    order_id = 0
+    function create_list(items){
+        // console.log(items.items)
+        order_id++;
+        const col = document.createElement('div')
+        col.className = 'col-sm'
+        const orders = document.createElement('div')
+        orders.className = 'orders'
+
+        // creating cards
+        const card = document.createElement('div')
+        card.className = 'card mt-4'
+        card.setAttribute('style','width: 18rem;')
+        const header = document.createElement('div')
+        header.className = 'card-header'
+        header.innerHTML = 'Order Id : ' + order_id
+        // adding header
+        card.appendChild(header)
+
+        const list = document.createElement('ul')
+        list.className = 'list-group list-group-flush'
+        // adding items
+        for (var i=0; i<items.length; i++){
+            var li = document.createElement('li')
+            li.className = 'list-group-item'
+            li.innerHTML = items[i]
+            list.appendChild(li)
+        }
+
+        // adding ul
+        card.appendChild(list)
+        orders.appendChild(card)
+        col.appendChild(orders)
+
+        // appending br
+        const br = document.createElement('br')
+        document.getElementById('all_orders').appendChild(br)
+
+        // appending the order to the body
+        document.getElementById('all_orders').appendChild(col)
+    }
+    
+    fetch('/orders')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        create_list(data)
+    });
+
+    // create_list(['apple','orange','banana'])
+
+// Example POST method implementation:
+async function postData(url = '', data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
