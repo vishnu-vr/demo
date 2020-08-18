@@ -73,6 +73,11 @@ app.get('/api', function(req, res, next) {
   res.json({'boom':'web-hooks-added'});
 });
 
+app.post('/secret', function(req, res, next) {
+  console.log(req.body)
+  res.json({'boom':'web-hooks-added'});
+});
+
 io.on('connection', (socket) =>{
   console.log('user connected')
 })
