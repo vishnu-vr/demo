@@ -31,6 +31,8 @@ app.get('/', function(req, res, next) {
 });
 
 app.post('/update', function(req, res, next) {
+
+  console.log(req.body)
   const ls = spawn("python3", ["update.py"]);
   
   ls.stdout.on("data", data => {
