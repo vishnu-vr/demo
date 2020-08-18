@@ -31,8 +31,8 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/update', function(req, res, next) {
-  const ls = spawn("git", ["pull"]);
-  const ls = spawn("pm2", ["restart", "app.js"]);
+  var ls = spawn("git", ["pull"]);
+  ls = spawn("pm2", ["restart", "app.js"]);
 
   ls.stdout.on("data", data => {
       console.log(`stdout: ${data}`);
