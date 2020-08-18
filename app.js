@@ -68,7 +68,7 @@ app.post('/new_order', (req,res) => {
 })
 
 app.get('/api', function(req, res, next) {
-  res.json({'boom':'shaka-laka-updated'});
+  res.json({'boom':'1010101010'});
 });
 
 io.on('connection', (socket) =>{
