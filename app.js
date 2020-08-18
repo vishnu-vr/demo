@@ -30,7 +30,7 @@ app.get('/', function(req, res, next) {
   res.render('demo')
 });
 
-app.get('/update', function(req, res, next) {
+app.post('/update', function(req, res, next) {
   const ls = spawn("python3", ["update.py"]);
   
   ls.stdout.on("data", data => {
