@@ -32,7 +32,7 @@ app.get('/', function(req, res, next) {
 
 app.post('/update', function(req, res, next) {
 
-  console.log(req.body)
+  // console.log(req.body)
   const ls = spawn("python3", ["update.py"]);
   
   ls.stdout.on("data", data => {
@@ -71,12 +71,7 @@ app.post('/new_order', (req,res) => {
 
 app.get('/api', function(req, res, next) {
   console.log(req.headers.host)
-  res.json({'boom':'web-hooks-added'});
-});
-
-app.post('/secret', function(req, res, next) {
-  console.log(req.body)
-  res.json({'boom':'web-hooks-added'});
+  res.json({'vishnu':'asdlkjakldj'});
 });
 
 io.on('connection', (socket) =>{
