@@ -68,7 +68,7 @@ app.post('/new_order', (req,res) => {
 })
 
 app.get('/api', function(req, res, next) {
-  res.json({'boom':'llllllllll'});
+  res.json({'boom':'web-hooks-added'});
 });
 
 io.on('connection', (socket) =>{
