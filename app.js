@@ -31,26 +31,8 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/update', function(req, res, next) {
-  var ls = spawn("git", ["pull"]);
+  const ls = spawn("python3", ["update.py"]);
   
-  ls.stdout.on("data", data => {
-      console.log(`stdout: ${data}`);
-  });
-
-  ls.stderr.on("data", data => {
-      console.log(`stderr: ${data}`);
-  });
-
-  ls.on('error', (error) => {
-      console.log(`error: ${error.message}`);
-  });
-
-  ls.on("close", code => {
-      console.log(`child process exited with code ${code}`);
-  });
-
-  ls = spawn("pm2", ["restart", "app.js"]);
-
   ls.stdout.on("data", data => {
       console.log(`stdout: ${data}`);
   });
@@ -71,10 +53,6 @@ app.get('/update', function(req, res, next) {
 
 });
 
-app.get('/api', function(req, res, next) {
-  res.json({'boom':'shaka-laka-updated'});
-});
-
 app.get('/newspaper', function(req, res, next) {
   res.render('news');
 });
@@ -88,6 +66,10 @@ app.post('/new_order', (req,res) => {
   io.emit('message', req.body)
   res.json('data received')
 })
+
+app.get('/api', function(req, res, next) {
+  res.json({'boom':'shaka-laka-updated'});
+});
 
 io.on('connection', (socket) =>{
   console.log('user connected')
