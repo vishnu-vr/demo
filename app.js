@@ -55,7 +55,7 @@ app.get('/update', function(req, res, next) {
 });
 
 app.get('/api', function(req, res, next) {
-  res.json({'name':'vishnu'});
+  res.json({'boom':'shaka-laka'});
 });
 
 app.get('/newspaper', function(req, res, next) {
