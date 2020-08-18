@@ -70,6 +70,7 @@ app.post('/new_order', (req,res) => {
 })
 
 app.get('/api', function(req, res, next) {
+  console.log(req.headers.host)
   res.json({'boom':'web-hooks-added'});
 });
 
