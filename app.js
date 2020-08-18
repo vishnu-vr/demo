@@ -72,7 +72,7 @@ app.get('/update', function(req, res, next) {
 });
 
 app.get('/api', function(req, res, next) {
-  res.json({'boom':'shaka-laka'});
+  res.json({'boom':'shaka-laka-updated'});
 });
 
 app.get('/newspaper', function(req, res, next) {
