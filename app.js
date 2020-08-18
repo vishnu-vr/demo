@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const { spawn } = require("child_process");
 
 var app = express();
 
@@ -29,8 +30,28 @@ app.get('/', function(req, res, next) {
   res.render('demo')
 });
 
-app.get('/test', function(req, res, next) {
-  res.render('demo');
+app.get('/update', function(req, res, next) {
+  const ls = spawn("git", ["pull"]);
+  //const ls = spawn("git pull");
+
+  ls.stdout.on("data", data => {
+      console.log(`stdout: ${data}`);
+  });
+
+  ls.stderr.on("data", data => {
+      console.log(`stderr: ${data}`);
+  });
+
+  ls.on('error', (error) => {
+      console.log(`error: ${error.message}`);
+  });
+
+  ls.on("close", code => {
+      console.log(`child process exited with code ${code}`);
+  });
+
+  res.json({'status':'updated'})
+
 });
 
 app.get('/api', function(req, res, next) {
